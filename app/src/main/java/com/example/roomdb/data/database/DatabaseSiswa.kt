@@ -20,7 +20,9 @@ abstract class DatabaseSiswa : RoomDatabase() {
                     context.applicationContext,
                     DatabaseSiswa::class.java,
                     DATABASE_NAME
-                ).build().also { INSTANCE = it }
+                )
+                    .build()
+                    .also { INSTANCE = it }
             }
     }
 }
