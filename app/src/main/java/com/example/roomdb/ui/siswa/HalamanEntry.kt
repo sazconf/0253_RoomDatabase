@@ -16,6 +16,9 @@ import androidx.compose.ui.unit.dp
 import com.example.roomdb.R
 import kotlinx.coroutines.flow.StateFlow
 
+private val EntryPadding = 16.dp
+private val EntryFieldSpacing = 12.dp
+
 @Composable
 fun HalamanEntry(
     siswaUiState: StateFlow<SiswaUiState>,
@@ -25,8 +28,8 @@ fun HalamanEntry(
 ) {
     val uiState by siswaUiState.collectAsState()
     Column(
-        modifier = Modifier.padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        modifier = Modifier.padding(EntryPadding),
+        verticalArrangement = Arrangement.spacedBy(EntryFieldSpacing)
     ) {
         OutlinedTextField(
             value = uiState.siswaEvent.nama,
