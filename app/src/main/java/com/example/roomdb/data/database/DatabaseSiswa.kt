@@ -12,13 +12,14 @@ abstract class DatabaseSiswa : RoomDatabase() {
     companion object {
         @Volatile
         private var INSTANCE: DatabaseSiswa? = null
+        private const val DATABASE_NAME = "siswa_database"
 
         fun getDatabase(context: Context): DatabaseSiswa =
             INSTANCE ?: synchronized(this) {
                 Room.databaseBuilder(
                     context.applicationContext,
                     DatabaseSiswa::class.java,
-                    "siswa_database"
+                    DATABASE_NAME
                 ).build().also { INSTANCE = it }
             }
     }
