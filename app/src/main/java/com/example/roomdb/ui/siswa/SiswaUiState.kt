@@ -18,12 +18,13 @@ data class HomeUiState(
     val listSiswa: List<Siswa> = emptyList()
 )
 
-fun SiswaEvent.toSiswa(): Siswa = Siswa(
-    id = id,
-    nama = nama.trim(),
-    alamat = alamat.trim(),
-    telepon = telepon.trim()
-)
+fun SiswaEvent.toSiswa(): Siswa =
+    Siswa(
+        id = id,
+        nama = nama.trim(),
+        alamat = alamat.trim(),
+        telepon = telepon.trim()
+    )
 
 fun Siswa.toSiswaEvent(): SiswaEvent = SiswaEvent(
     id = id,
