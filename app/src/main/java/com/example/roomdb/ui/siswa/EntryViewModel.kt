@@ -22,9 +22,10 @@ class EntryViewModel(
     }
 
     fun saveSiswa() {
-        if (!validateInput(_uiState.value.siswaEvent)) return
+        val siswaEvent = _uiState.value.siswaEvent
+        if (!validateInput(siswaEvent)) return
         viewModelScope.launch {
-            repositoriSiswa.insertSiswa(_uiState.value.siswaEvent.toSiswa())
+            repositoriSiswa.insertSiswa(siswaEvent.toSiswa())
         }
     }
 
