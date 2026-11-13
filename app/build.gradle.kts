@@ -1,16 +1,18 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "com.example.meeting9"
+    namespace = "com.example.myroomsatu"
     compileSdk {
-        version = release(37)
+        version = release(36)
     }
 
     defaultConfig {
-        applicationId = "com.example.meeting9"
+        applicationId = "com.example.myroomsatu"
         minSdk = 24
         targetSdk = 37
         versionCode = 1
