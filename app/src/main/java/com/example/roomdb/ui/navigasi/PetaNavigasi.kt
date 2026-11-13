@@ -1,18 +1,18 @@
 package com.example.roomdb.ui.navigasi
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.roomdb.AplikasiSiswa
 import com.example.roomdb.ui.PenyediaViewModel
 import com.example.roomdb.ui.siswa.EntryViewModel
 import com.example.roomdb.ui.siswa.HomeViewModel
 import com.example.roomdb.ui.siswa.HalamanEntry
 import com.example.roomdb.ui.siswa.HalamanHome
-import com.example.roomdb.AplikasiSiswa
 
 @Composable
 fun PetaNavigasi(
