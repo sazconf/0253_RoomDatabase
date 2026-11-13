@@ -11,7 +11,7 @@ data class SiswaEvent(
     val id: Int = 0,
     val nama: String = "",
     val alamat: String = "",
-    val telepon: String = ""
+    val telepon: String = "",
 )
 
 data class HomeUiState(
@@ -30,5 +30,5 @@ fun Siswa.toSiswaEvent(): SiswaEvent = SiswaEvent(
     id = id,
     nama = nama,
     alamat = alamat,
-    telepon = telepon
+    telepon = telepon,
 )
