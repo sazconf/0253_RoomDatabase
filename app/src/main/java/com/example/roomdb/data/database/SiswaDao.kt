@@ -5,9 +5,11 @@ import androidx.room.Insert
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
+private const val SELECT_ALL_SISWA = "SELECT * FROM siswa ORDER BY nama ASC"
+
 @Dao
 interface SiswaDao {
-    @Query("SELECT * FROM siswa ORDER BY nama ASC")
+    @Query(SELECT_ALL_SISWA)
     fun getAllSiswa(): Flow<List<Siswa>>
 
     @Insert
