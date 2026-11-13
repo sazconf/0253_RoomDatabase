@@ -26,6 +26,8 @@ import com.example.roomdb.R
 import com.example.roomdb.data.database.Siswa
 import kotlinx.coroutines.flow.StateFlow
 
+private val EmptyStatePadding = 24.dp
+
 @Composable
 fun HalamanHome(
     homeUiState: StateFlow<HomeUiState>,
@@ -47,7 +49,7 @@ fun HalamanHome(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
-                    .padding(24.dp),
+                    .padding(EmptyStatePadding),
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
