@@ -24,10 +24,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.roomdb.R
 import com.example.roomdb.data.database.Siswa
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun HalamanHome(
-    homeUiState: kotlinx.coroutines.flow.StateFlow<HomeUiState>,
+    homeUiState: StateFlow<HomeUiState>,
     onTambahSiswa: () -> Unit
 ) {
     val uiState by homeUiState.collectAsState()
