@@ -6,8 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.Modifier
 import com.example.meeting9.ui.theme.Meeting9Theme
-import com.example.roomdb.view.uicontroller.PetaNavigasi
+import com.example.roomdb.view.uicontroller.SiswaApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +25,5 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun AplikasiSiswaApp() {
-    val navController = rememberNavController()
-    PetaNavigasi(navController = navController)
+    SiswaApp(modifier = Modifier)
 }

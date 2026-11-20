@@ -1,73 +1,65 @@
 package com.example.roomdb.view.uicontroller
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.roomdb.view.DetailSiswaScreen
 import com.example.roomdb.view.EditSiswaScreen
-import com.example.roomdb.view.HalamanEntry
+import com.example.roomdb.view.EntrySiswaScreen
 import com.example.roomdb.view.HomeScreen
 import com.example.roomdb.view.route.DestinasiDetailSiswa
+import com.example.roomdb.view.route.DestinasiDetailSiswa.itemIdArg
 import com.example.roomdb.view.route.DestinasiEditSiswa
 import com.example.roomdb.view.route.DestinasiEntry
 import com.example.roomdb.view.route.DestinasiHome
-import com.example.roomdb.viewmodel.provider.PenyediaViewModel
 
 @Composable
-fun PetaNavigasi(
+fun SiswaApp(navController: NavHostController = rememberNavController(), modifier: Modifier) {
+    HostNavigasi(navController = navController)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HostNavigasi(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
-    NavHost(
-        navController = navController,
-        startDestination = DestinasiHome.route,
-        modifier = modifier
-    ) {
+    NavHost(navController = navController, startDestination = DestinasiHome.route, modifier = Modifier)
+    {
         composable(DestinasiHome.route) {
             HomeScreen(
                 navigateToItemEntry = { navController.navigate(DestinasiEntry.route) },
-                navigateToItemUpdate = { itemId ->
-                    navController.navigate("${DestinasiDetailSiswa.route}/$itemId")
+                //edit 1 : tambahkan parameter navigateToItemUpdate
+                navigateToItemUpdate = {
+                    navController.navigate("${DestinasiDetailSiswa.route}/${it}")
                 }
             )
         }
         composable(DestinasiEntry.route) {
-            HalamanEntry(
-                viewModel = viewModel(factory = PenyediaViewModel.Factory),
-                navigateBack = { navController.popBackStack() }
-            )
+            EntrySiswaScreen(navigateBack = { navController.popBackStack() })
         }
-        composable(
-            route = DestinasiDetailSiswa.routeWithArgs,
-            arguments = listOf(
-                navArgument(DestinasiDetailSiswa.itemIdArg) {
-                    type = NavType.IntType
-                }
-            )
+        //edit 2 : tambahkan 2 composable route
+        composable(route = DestinasiDetailSiswa.routeWithArgs,
+            arguments = listOf(navArgument(itemIdArg) {
+                type = NavType.IntType
+            })
         ) {
             DetailSiswaScreen(
-                viewModel = viewModel(factory = PenyediaViewModel.Factory),
-                navigateToEditItem = { itemId ->
-                    navController.navigate("${DestinasiEditSiswa.route}/$itemId")
-                },
+                navigateToEditItem = {navController.navigate("${DestinasiEditSiswa.route}/$it")},
                 navigateBack = { navController.navigateUp() }
             )
         }
-        composable(
-            route = DestinasiEditSiswa.routeWithArgs,
-            arguments = listOf(
-                navArgument(DestinasiEditSiswa.itemIdArg) {
-                    type = NavType.IntType
-                }
-            )
-        ) {
+        composable(route = DestinasiEditSiswa.routeWithArgs,
+            arguments = listOf(navArgument(DestinasiEditSiswa.itemIdArg) {
+                type = NavType.IntType
+            })) {
             EditSiswaScreen(
-                viewModel = viewModel(factory = PenyediaViewModel.Factory),
                 navigateBack = { navController.popBackStack() },
                 onNavigateUp = { navController.navigateUp() }
             )
