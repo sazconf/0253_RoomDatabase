@@ -39,7 +39,7 @@ import com.example.roomdb.R
 import com.example.roomdb.data.database.Siswa
 import com.example.roomdb.view.route.DestinasiDetailSiswa
 import com.example.roomdb.viewmodel.DetailViewModel
-import com.example.roomdb.viewmodel.ItemDetailsUiState
+import com.example.roomdb.viewmodel.DetailSiswaUiState
 import com.example.roomdb.viewmodel.toSiswa
 import kotlinx.coroutines.launch
 
@@ -51,7 +51,7 @@ fun HalamanDetailSiswa(
     modifier: Modifier = Modifier,
     viewModel: DetailViewModel
 ) {
-    val uiState = viewModel.uiState.collectAsState()
+    val uiDetailState = viewModel.uiDetailState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -67,7 +67,7 @@ fun HalamanDetailSiswa(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navigateToEditItem(uiState.value.detailSiswa.id) },
+                onClick = { navigateToEditItem(uiDetailState.value.detailSiswa.id) },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
             ) {
@@ -79,7 +79,7 @@ fun HalamanDetailSiswa(
         }
     ) { innerPadding ->
         BodyDetailSiswa(
-            itemDetailsUiState = uiState.value,
+            detailSiswaUiState = uiDetailState.value,
             onDelete = {
                 coroutineScope.launch {
                     viewModel.deleteSiswa()
@@ -95,7 +95,7 @@ fun HalamanDetailSiswa(
 
 @Composable
 private fun BodyDetailSiswa(
-    itemDetailsUiState: ItemDetailsUiState,
+    detailSiswaUiState: DetailSiswaUiState,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -106,7 +106,7 @@ private fun BodyDetailSiswa(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
         ItemDetails(
-            siswa = itemDetailsUiState.detailSiswa.toSiswa(),
+            siswa = detailSiswaUiState.detailSiswa.toSiswa(),
             modifier = Modifier.fillMaxWidth()
         )
         OutlinedButton(

@@ -12,24 +12,21 @@ import com.example.roomdb.viewmodel.EntryViewModel
 import com.example.roomdb.viewmodel.HomeViewModel
 
 object PenyediaViewModel {
-    val Factory: ViewModelProvider.Factory = viewModelFactory {
+    val Factory = viewModelFactory {
         initializer {
             HomeViewModel(aplikasiSiswa().containerApp.repositoriSiswa)
         }
         initializer {
             EntryViewModel(aplikasiSiswa().containerApp.repositoriSiswa)
         }
+        //edit : tambah initializer untuk DetailViewModel dan EditViewModel
         initializer {
-            DetailViewModel(
-                createSavedStateHandle(),
-                aplikasiSiswa().containerApp.repositoriSiswa
-            )
+            DetailViewModel(savedStateHandle = this.createSavedStateHandle(),
+                aplikasiSiswa().containerApp.repositoriSiswa)
         }
+
         initializer {
-            EditViewModel(
-                createSavedStateHandle(),
-                aplikasiSiswa().containerApp.repositoriSiswa
-            )
+            EditViewModel(savedStateHandle = this.createSavedStateHandle(), aplikasiSiswa().containerApp.repositoriSiswa)
         }
     }
 }
