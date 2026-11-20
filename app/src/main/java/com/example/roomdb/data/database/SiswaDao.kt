@@ -1,17 +1,28 @@
 package com.example.roomdb.data.database
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
-
-private const val SELECT_ALL_SISWA = "SELECT * FROM siswa ORDER BY nama ASC"
 
 @Dao
 interface SiswaDao {
-    @Query(SELECT_ALL_SISWA)
+    @Query("SELECT * FROM tblSiswa ORDER BY nama ASC")
     fun getAllSiswa(): Flow<List<Siswa>>
 
-    @Insert
-    suspend fun insertSiswa(siswa: Siswa)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(siswa: Siswa)
+
+    //Edit : tambah 3 fungsi berikut
+    @Query("SELECT * from tblSiswa WHERE id = :id")
+    fun getSiswa(id: Int): Flow<Siswa>
+
+    @Delete
+    suspend fun delete(siswa: Siswa)
+
+    @Update
+    suspend fun update(siswa: Siswa)
 }
