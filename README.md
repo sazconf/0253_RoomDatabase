@@ -33,10 +33,15 @@ The entry screen collects the student's name, address, and phone number. **Simpa
 
 ## Build
 
-Open the project in Android Studio, or run:
+-------------------------------NEW WEEK --------------------------------------------
 
-```shell
-./gradlew assembleDebug
-```
+<img width="1200" height="2664" alt="image" src="https://github.com/user-attachments/assets/9f57c234-26dc-4729-afeb-600762cac806" />
 
-On Windows, use `gradlew.bat assembleDebug`.
+
+<img width="600" height="1332" alt="image" src="https://github.com/user-attachments/assets/44d60141-5fe4-4c9c-85a2-5cb599c50887" />
+
+
+<img width="1200" height="2664" alt="image" src="https://github.com/user-attachments/assets/9a29de0b-45db-49bc-827a-40b1569c1cd9" />
+
+
+
