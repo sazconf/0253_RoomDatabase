@@ -3,7 +3,6 @@ package com.example.roomdb.view
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,21 +32,23 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.roomdb.R
 import com.example.roomdb.data.database.Siswa
 import com.example.roomdb.view.route.DestinasiHome
 import com.example.roomdb.viewmodel.HomeViewModel
+import com.example.roomdb.viewmodel.provider.PenyediaViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HalamanHome(
-    viewModel: HomeViewModel,
-    onTambahSiswa: () -> Unit,
-    onDetailClick: (Int) -> Unit,
-    modifier: Modifier = Modifier
+fun HomeScreen(
+    navigateToItemEntry: () -> Unit,
+    //edit 5
+    navigateToItemUpdate: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    val homeUiState by viewModel.homeUiState.collectAsState()
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -60,7 +61,7 @@ fun HalamanHome(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = onTambahSiswa,
+                onClick = navigateToItemEntry,
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
             ) {
@@ -69,11 +70,14 @@ fun HalamanHome(
                     contentDescription = stringResource(R.string.entry_siswa)
                 )
             }
-        }
-    ) { innerPadding ->
+        },
+    ) {
+            innerPadding ->
+        val uiStateSiswa by viewModel.homeUiState.collectAsState()
         BodyHome(
-            itemSiswa = homeUiState.listSiswa,
-            onSiswaClick = onDetailClick,
+            itemSiswa = uiStateSiswa.listSiswa,
+            //edit 6
+            onSiswaClick = navigateToItemUpdate,
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
@@ -82,8 +86,9 @@ fun HalamanHome(
 }
 
 @Composable
-private fun BodyHome(
+fun BodyHome(
     itemSiswa: List<Siswa>,
+    //edit 3 : parameter onSiswaClick
     onSiswaClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -95,13 +100,13 @@ private fun BodyHome(
             Text(
                 text = stringResource(R.string.no_items),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
+                style = MaterialTheme.typography.titleLarge
             )
         } else {
             ListSiswa(
                 itemSiswa = itemSiswa,
-                onItemClick = { onSiswaClick(it.id) },
+                //edit 4
+                onSiswaClick = { onSiswaClick(it.id) },
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
             )
         }
@@ -109,29 +114,26 @@ private fun BodyHome(
 }
 
 @Composable
-private fun ListSiswa(
+fun ListSiswa(
     itemSiswa: List<Siswa>,
-    onItemClick: (Siswa) -> Unit,
+    //edit 1 : tambahkan parameter onSiswaClick
+    onSiswaClick: (Siswa) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(
-        modifier = modifier,
-        contentPadding = PaddingValues(dimensionResource(id = R.dimen.padding_small))
-    ) {
-        items(items = itemSiswa, key = { it.id }) { person ->
-            DataSiswa(
-                siswa = person,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(dimensionResource(id = R.dimen.padding_small))
-                    .clickable { onItemClick(person) }
-            )
+    LazyColumn(modifier = modifier) {
+        items(items = itemSiswa, key = { it.id }) {
+                person -> DataSiswa(
+            siswa = person,
+            modifier = Modifier
+                .padding(dimensionResource(id = R.dimen.padding_small))
+                //edit 2 : tambahan modifikasi clickable
+                .clickable { onSiswaClick(person) })
         }
     }
 }
 
 @Composable
-private fun DataSiswa(
+fun DataSiswa(
     siswa: Siswa,
     modifier: Modifier = Modifier
 ) {
@@ -153,7 +155,7 @@ private fun DataSiswa(
                 Spacer(Modifier.weight(1f))
                 Icon(
                     imageVector = Icons.Default.Phone,
-                    contentDescription = null
+                    contentDescription = null,
                 )
                 Text(
                     text = siswa.telepon,

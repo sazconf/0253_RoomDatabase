@@ -11,7 +11,7 @@ import androidx.navigation.navArgument
 import com.example.roomdb.view.DetailSiswaScreen
 import com.example.roomdb.view.EditSiswaScreen
 import com.example.roomdb.view.HalamanEntry
-import com.example.roomdb.view.HalamanHome
+import com.example.roomdb.view.HomeScreen
 import com.example.roomdb.view.route.DestinasiDetailSiswa
 import com.example.roomdb.view.route.DestinasiEditSiswa
 import com.example.roomdb.view.route.DestinasiEntry
@@ -29,10 +29,9 @@ fun PetaNavigasi(
         modifier = modifier
     ) {
         composable(DestinasiHome.route) {
-            HalamanHome(
-                viewModel = viewModel(factory = PenyediaViewModel.Factory),
-                onTambahSiswa = { navController.navigate(DestinasiEntry.route) },
-                onDetailClick = { itemId ->
+            HomeScreen(
+                navigateToItemEntry = { navController.navigate(DestinasiEntry.route) },
+                navigateToItemUpdate = { itemId ->
                     navController.navigate("${DestinasiDetailSiswa.route}/$itemId")
                 }
             )
