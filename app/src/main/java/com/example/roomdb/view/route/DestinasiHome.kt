@@ -1,4 +1,4 @@
-package com.example.roomdb.ui.navigasi
+package com.example.roomdb.view.route
 
 import com.example.roomdb.R
 

@@ -1,4 +1,4 @@
-package com.example.roomdb.ui.navigasi
+package com.example.roomdb.view.route
 
 interface DestinasiNavigasi {
     val route: String

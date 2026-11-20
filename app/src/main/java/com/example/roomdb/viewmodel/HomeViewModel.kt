@@ -1,4 +1,4 @@
-package com.example.roomdb.ui.siswa
+package com.example.roomdb.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
