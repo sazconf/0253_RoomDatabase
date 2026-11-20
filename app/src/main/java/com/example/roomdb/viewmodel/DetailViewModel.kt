@@ -15,24 +15,31 @@ class DetailViewModel(
     savedStateHandle: SavedStateHandle,
     private val repositoriSiswa: RepositoriSiswa
 ) : ViewModel() {
-    private val siswaId: Int = checkNotNull(savedStateHandle[DestinasiDetailSiswa.itemIdArg])
+    private val idSiswa: Int = checkNotNull(savedStateHandle[DestinasiDetailSiswa.itemIdArg])
 
-    val uiState: StateFlow<ItemDetailsUiState> =
-        repositoriSiswa.getSiswaStream(siswaId)
+    val uiDetailState: StateFlow<DetailSiswaUiState> =
+        repositoriSiswa.getSiswaStream(idSiswa)
             .filterNotNull()
             .map {
-                ItemDetailsUiState(detailSiswa = it.toDetailSiswa())
+                DetailSiswaUiState(detailSiswa = it.toDetailSiswa())
             }.stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
-                initialValue = ItemDetailsUiState()
+                initialValue = DetailSiswaUiState()
             )
 
     suspend fun deleteSiswa() {
-        repositoriSiswa.deleteSiswa(uiState.value.detailSiswa.toSiswa())
+        repositoriSiswa.deleteSiswa(uiDetailState.value.detailSiswa.toSiswa())
     }
 
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L
     }
 }
+
+/**
+ * UI state for ItemDetailsScreen
+ */
+data class DetailSiswaUiState(
+    val detailSiswa: DetailSiswa = DetailSiswa()
+)

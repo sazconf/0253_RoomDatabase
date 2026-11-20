@@ -34,3 +34,39 @@ class EntryViewModel(
             nama.isNotBlank() && alamat.isNotBlank() && telepon.isNotBlank()
         }
 }
+
+data class UiStateSiswa(
+    val detailSiswa: DetailSiswa = DetailSiswa(),
+    val isEntryValid: Boolean = false
+)
+
+data class DetailSiswa(
+    val id: Int = 0,
+    val nama: String = "",
+    val alamat: String = "",
+    val telepon: String = "",
+)
+
+data class HomeUiState(
+    val listSiswa: List<com.example.roomdb.data.database.Siswa> = emptyList()
+)
+
+fun DetailSiswa.toSiswa(): com.example.roomdb.data.database.Siswa =
+    com.example.roomdb.data.database.Siswa(
+        id = id,
+        nama = nama.trim(),
+        alamat = alamat.trim(),
+        telepon = telepon.trim()
+    )
+
+fun com.example.roomdb.data.database.Siswa.toUiStateSiswa(isEntryValid: Boolean = false): UiStateSiswa = UiStateSiswa(
+    detailSiswa = this.toDetailSiswa(),
+    isEntryValid = isEntryValid
+)
+
+fun com.example.roomdb.data.database.Siswa.toDetailSiswa(): DetailSiswa = DetailSiswa(
+    id = id,
+    nama = nama,
+    alamat = alamat,
+    telepon = telepon,
+)
