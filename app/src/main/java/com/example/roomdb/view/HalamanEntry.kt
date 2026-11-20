@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 fun EntrySiswaScreen(
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: EntryViewModel
+    viewModel: EntryViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = com.example.roomdb.viewmodel.provider.PenyediaViewModel.Factory)
 ) {
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
