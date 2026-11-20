@@ -22,7 +22,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,61 +30,59 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.roomdb.R
 import com.example.roomdb.data.database.Siswa
 import com.example.roomdb.view.route.DestinasiDetailSiswa
-import com.example.roomdb.viewmodel.DetailViewModel
 import com.example.roomdb.viewmodel.DetailSiswaUiState
+import com.example.roomdb.viewmodel.DetailViewModel
+import com.example.roomdb.viewmodel.provider.PenyediaViewModel
 import com.example.roomdb.viewmodel.toSiswa
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HalamanDetailSiswa(
+fun DetailSiswaScreen(
     navigateToEditItem: (Int) -> Unit,
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: DetailViewModel
+    viewModel: DetailViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
-    val uiDetailState = viewModel.uiDetailState.collectAsState()
-    val coroutineScope = rememberCoroutineScope()
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-
     Scaffold(
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             SiswaTopAppBar(
                 title = stringResource(DestinasiDetailSiswa.titleRes),
                 canNavigateBack = true,
-                navigateUp = navigateBack,
-                scrollBehavior = scrollBehavior
+                navigateUp = navigateBack
             )
         },
         floatingActionButton = {
+            val uiState = viewModel.uiDetailState.collectAsState()
             FloatingActionButton(
-                onClick = { navigateToEditItem(uiDetailState.value.detailSiswa.id) },
+                onClick = {
+                    navigateToEditItem(uiState.value.detailSiswa.id)
+                },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
             ) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = stringResource(R.string.edit_siswa),
+                    contentDescription = stringResource(R.string.update),
                 )
             }
-        }
+        }, modifier = modifier
     ) { innerPadding ->
-        BodyDetailSiswa(
-            detailSiswaUiState = uiDetailState.value,
-            onDelete = {
-                coroutineScope.launch {
-                    viewModel.deleteSiswa()
-                    navigateBack()
-                }
-            },
+        val uiState = viewModel.uiDetailState.collectAsState()
+        val coroutineScope = rememberCoroutineScope()
+        BodyDetailDataSiswa(
+            detailSiswaUiState = uiState.value,
+            onDelete = { coroutineScope.launch {
+                viewModel.deleteSiswa()
+                navigateBack()
+            } },
             modifier = Modifier
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
@@ -94,21 +91,22 @@ fun HalamanDetailSiswa(
 }
 
 @Composable
-private fun BodyDetailSiswa(
+private fun BodyDetailDataSiswa(
     detailSiswaUiState: DetailSiswaUiState,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
-
     Column(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
-        ItemDetails(
+        var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
+
+        DetailDataSiswa(
             siswa = detailSiswaUiState.detailSiswa.toSiswa(),
             modifier = Modifier.fillMaxWidth()
         )
+
         OutlinedButton(
             onClick = { deleteConfirmationRequired = true },
             shape = MaterialTheme.shapes.small,
@@ -130,13 +128,11 @@ private fun BodyDetailSiswa(
 }
 
 @Composable
-fun ItemDetails(
-    siswa: Siswa,
-    modifier: Modifier = Modifier
+fun DetailDataSiswa(
+    siswa: Siswa, modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier,
-        colors = CardDefaults.cardColors(
+        modifier = modifier, colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
@@ -147,33 +143,46 @@ fun ItemDetails(
                 .padding(dimensionResource(id = R.dimen.padding_medium)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
         ) {
-            ItemDetailRow(
+            BarisDetailData(
                 labelResID = R.string.nama,
                 itemDetail = siswa.nama,
-                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
+                modifier = Modifier.padding(
+                    horizontal = dimensionResource(
+                        id = R.dimen
+                            .padding_medium
+                    )
+                )
             )
-            ItemDetailRow(
+            BarisDetailData(
                 labelResID = R.string.alamat,
                 itemDetail = siswa.alamat,
-                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
+                modifier = Modifier.padding(
+                    horizontal = dimensionResource(
+                        id = R.dimen
+                            .padding_medium
+                    )
+                )
             )
-            ItemDetailRow(
+            BarisDetailData(
                 labelResID = R.string.telepon,
                 itemDetail = siswa.telepon,
-                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
+                modifier = Modifier.padding(
+                    horizontal = dimensionResource(
+                        id = R.dimen
+                            .padding_medium
+                    )
+                )
             )
         }
     }
 }
 
 @Composable
-private fun ItemDetailRow(
-    @StringRes labelResID: Int,
-    itemDetail: String,
-    modifier: Modifier = Modifier
+private fun BarisDetailData(
+    @StringRes labelResID: Int, itemDetail: String, modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier) {
-        Text(text = stringResource(labelResID))
+        Text(stringResource(labelResID))
         Spacer(modifier = Modifier.weight(1f))
         Text(text = itemDetail, fontWeight = FontWeight.Bold)
     }
@@ -185,19 +194,18 @@ private fun DeleteConfirmationDialog(
     onDeleteCancel: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    AlertDialog(
-        onDismissRequest = { /* Do nothing */ },
+    AlertDialog(onDismissRequest = { /* Do nothing */ },
         title = { Text(stringResource(R.string.attention)) },
         text = { Text(stringResource(R.string.tanya)) },
         modifier = modifier,
         dismissButton = {
             TextButton(onClick = onDeleteCancel) {
-                Text(text = stringResource(R.string.no))
+                Text(stringResource(R.string.no))
             }
         },
         confirmButton = {
             TextButton(onClick = onDeleteConfirm) {
-                Text(text = stringResource(R.string.yes))
+                Text(stringResource(R.string.yes))
             }
         }
     )

@@ -8,7 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.roomdb.view.HalamanDetailSiswa
+import com.example.roomdb.view.DetailSiswaScreen
 import com.example.roomdb.view.HalamanEdit
 import com.example.roomdb.view.HalamanEntry
 import com.example.roomdb.view.HalamanHome
@@ -51,7 +51,7 @@ fun PetaNavigasi(
                 }
             )
         ) {
-            HalamanDetailSiswa(
+            DetailSiswaScreen(
                 viewModel = viewModel(factory = PenyediaViewModel.Factory),
                 navigateToEditItem = { itemId ->
                     navController.navigate("${DestinasiEditSiswa.route}/$itemId")
